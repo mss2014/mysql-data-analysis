@@ -23,6 +23,7 @@ This project uses the [MySQL Sample Database](https://www.mysqltutorial.org/mysq
 SELECT customerName, country
 FROM customers
 WHERE country = 'USA';
+(1.png)
 
 • Show total sales for each product
 SELECT p.productCode, p.productName, SUM(od.quantityOrdered * od.priceEach) AS total_sales
@@ -30,14 +31,16 @@ FROM orderdetails od
 JOIN products p ON od.productCode = p.productCode
 GROUP BY p.productCode, p.productName
 ORDER BY total_sales DESC;
+(7.png)
 
-• Find customers with more than 5 orders
+• Find customers with more than 3 orders
 SELECT customerName
 FROM customers
 WHERE customerNumber IN (SELECT customerNumber
   FROM orders
   GROUP BY customerNumber
-  HAVING COUNT(orderNumber) > 5);
+  HAVING COUNT(orderNumber) > 3);
+(5.png)
 
 ⚡ Make Queries Faster with Indexes
 What is an Index?
@@ -45,12 +48,14 @@ An index helps MySQL find data faster, like a book’s table of contents.
 
 • Create an Index
 CREATE INDEX idx_orders_customerNumber ON orders(customerNumber);
+(10.1)
 
 • This helps speed up queries like:
 SELECT * FROM orders WHERE customerNumber = 103;
 
 • Check if MySQL uses the index
 EXPLAIN SELECT * FROM orders WHERE customerNumber = 103;
+(10.2)
 
 • Remove an Index
 DROP INDEX idx_orders_customerNumber ON orders;
@@ -65,5 +70,6 @@ FROM customers c
 JOIN orders o ON c.customerNumber = o.customerNumber
 JOIN orderdetails od ON o.orderNumber = od.orderNumber
 GROUP BY c.customerName;
+(9.png)
 
 This project is licensed under the MIT License.
